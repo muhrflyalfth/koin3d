@@ -1,0 +1,991 @@
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: #17212b;
+
+  background: #ffffff;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+.app {
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8fbfd 45%,
+      #eef5f9 100%
+    );
+}
+
+
+/* =====================================================
+   TOP NAVIGATION
+===================================================== */
+
+.top-bar {
+  width: 100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #075b9f 0%,
+      #064b83 100%
+    );
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  box-shadow:
+    0 5px 25px
+    rgba(0, 65, 110, 0.15);
+}
+
+.top-inner {
+  width:
+    min(1180px, calc(100% - 60px));
+
+  min-height: 72px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: white;
+}
+
+.brand-symbol {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.7);
+
+  border-radius: 50%;
+
+  font-family: Georgia, serif;
+
+  font-size: 17px;
+
+  font-weight: bold;
+}
+
+.brand strong {
+  display: block;
+
+  font-family: Georgia, serif;
+
+  font-size: 14px;
+
+  letter-spacing: 0.4px;
+}
+
+.brand span {
+  display: block;
+
+  margin-top: 3px;
+
+  color:
+    rgba(255, 255, 255, 0.7);
+
+  font-size: 9px;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+nav {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+nav a {
+  padding:
+    10px 17px;
+
+  color:
+    rgba(255, 255, 255, 0.9);
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  border-radius: 8px;
+
+  transition:
+    all 0.25s ease;
+}
+
+nav a:hover {
+  color: white;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+  width:
+    min(1180px, calc(100% - 60px));
+
+  margin: auto;
+
+  padding:
+    55px 0 32px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+}
+
+.eyebrow {
+  color: #39769e;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.header h1 {
+  margin:
+    10px 0 5px;
+
+  color: #142536;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 40px;
+
+  line-height: 1;
+
+  letter-spacing: -1px;
+}
+
+.header p {
+  margin: 0;
+
+  color: #7b8995;
+
+  font-size: 13px;
+}
+
+.year {
+  text-align: right;
+}
+
+.year span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #8996a0;
+
+  font-size: 9px;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+.year strong {
+  color: #075c9f;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 30px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+  width: min(1000px, calc(100% - 60px));
+  margin: auto;
+  padding-bottom: 50px;
+}
+
+
+/* ==================================
+   COIN CARD
+================================== */
+
+.coin-card {
+  width: 100%;
+  overflow: hidden;
+
+  border: 1px solid rgba(112, 157, 183, 0.32);
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 25px 70px rgba(0, 40, 80, 0.15);
+
+  backdrop-filter: blur(15px);
+}
+
+
+/* =====================================================
+   COIN HEADER
+===================================================== */
+
+.coin-header {
+  min-height: 78px;
+
+  padding:
+    18px 26px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8fbfd 100%
+    );
+
+  border-bottom:
+    1px solid
+    #e2e8ed;
+}
+
+.coin-header > div:first-child span {
+  color: #7191a6;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+.coin-header h2 {
+  margin:
+    5px 0 0;
+
+  color: #172936;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 19px;
+}
+
+.status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #72818c;
+
+  font-size: 9px;
+
+  letter-spacing: 0.3px;
+}
+
+.status i {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22b573;
+
+  box-shadow:
+    0 0 12px
+    rgba(34, 181, 115, 0.6);
+}
+
+
+/* =====================================================
+   3D COIN VIEWER
+===================================================== */
+
+.coin-viewer {
+  position: relative;
+
+  height: 540px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #eaf5ff 0%,
+      #dcecf8 45%,
+      #cbdfea 100%
+    );
+}
+
+
+/* =====================================================
+   SOFT LIGHT EFFECT
+===================================================== */
+
+.coin-viewer::before {
+  content: "";
+
+  position: absolute;
+
+  width: 600px;
+  height: 600px;
+
+  left: 50%;
+  top: 48%;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.6) 35%,
+      rgba(255, 255, 255, 0) 72%
+    );
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* =====================================================
+   SUBTLE GRID
+===================================================== */
+
+.coin-viewer::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(
+      rgba(38, 100, 135, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(38, 100, 135, 0.06) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    55px 55px;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* =====================================================
+   THREE.JS CANVAS
+===================================================== */
+
+.coin-viewer canvas {
+  position: relative;
+
+  z-index: 2;
+
+  display: block;
+
+  width: 100% !important;
+
+  height: 100% !important;
+}
+
+
+/* =====================================================
+   INSTRUCTION
+===================================================== */
+
+.instruction {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 50%;
+  bottom: 20px;
+
+  transform:
+    translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    11px 19px;
+
+  border:
+    1px solid
+    rgba(30, 65, 90, 0.15);
+
+  border-radius: 30px;
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  color: #657580;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 10px 30px
+    rgba(30, 55, 70, 0.14);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+.mouse-icon {
+  font-size: 12px;
+}
+
+.instruction b {
+  color: #b28a3c;
+
+  font-weight: normal;
+}
+
+
+/* =====================================================
+   INFORMATION
+===================================================== */
+
+.information {
+  display: grid;
+
+  grid-template-columns:
+    repeat(6, 1fr);
+
+  gap: 1px;
+
+  background:
+    #dce5eb;
+
+  border-top:
+    1px solid
+    #dce5eb;
+}
+
+.info-card {
+  min-height: 96px;
+
+  padding:
+    20px 19px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8fbfd 100%
+    );
+
+  transition:
+    background 0.25s ease;
+}
+
+.info-card:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f0f7fb 100%
+    );
+}
+
+.info-card:last-child {
+  border-right: none;
+}
+
+.info-card span {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #8b9aa5;
+
+  font-size: 9px;
+
+  letter-spacing: 0.6px;
+
+  text-transform: uppercase;
+}
+
+.info-card strong {
+  color: #1d2b35;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 15px;
+}
+
+
+/* =====================================================
+   EDUCATION
+===================================================== */
+
+.education {
+  margin-top: 80px;
+}
+
+.section-title {
+  margin-bottom: 30px;
+
+  text-align: center;
+}
+
+.section-title > span {
+  color: #39769e;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.section-title h2 {
+  margin:
+    9px 0 7px;
+
+  color: #1a2730;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 30px;
+}
+
+.section-title p {
+  margin: 0;
+
+  color: #788792;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   EDUCATION GRID
+===================================================== */
+
+.education-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 17px;
+}
+
+.education-card {
+  position: relative;
+
+  min-height: 190px;
+
+  padding: 26px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #dce4e9;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f4f8fb 100%
+    );
+
+  box-shadow:
+    0 12px 35px
+    rgba(40, 60, 75, 0.07);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.education-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 110px;
+  height: 110px;
+
+  right: -35px;
+  top: -35px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(7, 91, 159, 0.08),
+      rgba(7, 91, 159, 0)
+    );
+}
+
+.education-card:hover {
+  transform:
+    translateY(-6px);
+
+  border-color:
+    #c8dce8;
+
+  box-shadow:
+    0 20px 45px
+    rgba(40, 60, 75, 0.13);
+}
+
+.card-number {
+  color: #b28a3c;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 12px;
+
+  font-weight: bold;
+}
+
+.education-card h3 {
+  margin:
+    18px 0 8px;
+
+  color: #1d2b35;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 19px;
+}
+
+.education-card p {
+  margin: 0;
+
+  color: #74838d;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+  background:
+    linear-gradient(
+      135deg,
+      #075b9f 0%,
+      #064b83 100%
+    );
+
+  color: white;
+
+  box-shadow:
+    0 -10px 30px
+    rgba(0, 65, 110, 0.08);
+}
+
+.footer-inner {
+  width:
+    min(1180px, calc(100% - 60px));
+
+  min-height: 100px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.footer-brand strong {
+  display: block;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 15px;
+}
+
+.footer-brand span {
+  display: block;
+
+  margin-top: 4px;
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-size: 9px;
+}
+
+.footer-right {
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-size: 9px;
+}
+
+
+/* =====================================================
+   RESPONSIVE - TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .top-inner {
+    width:
+      calc(100% - 40px);
+  }
+
+  .header {
+    width:
+      calc(100% - 40px);
+  }
+
+  .main {
+    width:
+      calc(100% - 40px);
+  }
+
+  .information {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+  .education-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE - MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .top-inner {
+    width:
+      calc(100% - 30px);
+
+    min-height: 60px;
+  }
+
+  nav {
+    display: none;
+  }
+
+  .header {
+    width:
+      calc(100% - 30px);
+
+    padding:
+      30px 0 25px;
+  }
+
+  .header h1 {
+    font-size: 30px;
+  }
+
+  .header p {
+    font-size: 11px;
+  }
+
+  .year {
+    display: none;
+  }
+
+  .main {
+    width:
+      calc(100% - 30px);
+  }
+
+  .coin-card {
+    border-radius: 18px;
+  }
+
+  .coin-viewer {
+    height: 500px;
+  }
+
+  .coin-header {
+    padding:
+      15px 17px;
+  }
+
+  .coin-header h2 {
+    font-size: 16px;
+  }
+
+  .information {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .info-card {
+    min-height: 82px;
+
+    padding: 15px;
+  }
+
+  .info-card strong {
+    font-size: 13px;
+  }
+
+  .instruction {
+    bottom: 15px;
+
+    padding:
+      9px 12px;
+
+    font-size: 8px;
+  }
+
+  .education {
+    margin-top: 55px;
+  }
+
+  .section-title h2 {
+    font-size: 25px;
+  }
+
+  .footer-inner {
+    width:
+      calc(100% - 30px);
+
+    min-height: 90px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    gap: 7px;
+  }
+
+}
