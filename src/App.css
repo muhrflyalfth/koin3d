@@ -1,17 +1,12 @@
-/* =====================================================
+
+/* =========================================================
    GLOBAL
-===================================================== */
+========================================================= */
 
 * {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
   margin: 0;
-  width: 100%;
-  min-height: 100%;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
@@ -27,13 +22,23 @@ body {
 
   color: #17212b;
 
-  background: #ffffff;
+  background: #f5f9fc;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 
-/* =====================================================
+/* =========================================================
    APP
-===================================================== */
+========================================================= */
 
 .app {
   min-height: 100vh;
@@ -44,209 +49,579 @@ body {
     linear-gradient(
       180deg,
       #ffffff 0%,
-      #f8fbfd 45%,
+      #f8fbfd 48%,
       #eef5f9 100%
     );
 }
 
 
-/* =====================================================
-   TOP NAVIGATION
-===================================================== */
+/* =========================================================
+   NAVBAR
+========================================================= */
 
-.top-bar {
+.main-navbar {
+  position: relative;
+
+  z-index: 1000;
+
   width: 100%;
 
-  background:
-    linear-gradient(
-      135deg,
-      #075b9f 0%,
-      #064b83 100%
-    );
+  background: #ffffff;
 
   border-bottom:
     1px solid
-    rgba(255, 255, 255, 0.2);
+    #e6ebef;
 
   box-shadow:
-    0 5px 25px
-    rgba(0, 65, 110, 0.15);
+    0 2px 12px
+    rgba(30, 70, 100, 0.06);
 }
 
-.top-inner {
-  width:
-    min(1180px, calc(100% - 60px));
 
-  min-height: 72px;
+/* =========================================================
+   NAVBAR CONTAINER
+========================================================= */
 
-  margin: auto;
+.navbar-container {
+  position: relative;
+
+  min-height: 76px;
 
   display: flex;
 
   align-items: center;
 
-  justify-content: space-between;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 
-/* =====================================================
-   BRAND
-===================================================== */
+/* =========================================================
+   BAGIAN KIRI
+========================================================= */
 
-.brand {
+.navbar-left {
   display: flex;
 
   align-items: center;
 
-  gap: 12px;
+  gap: 18px;
 
-  color: white;
+  flex-shrink: 0;
+
+  margin-left: 0px;
 }
 
-.brand-symbol {
-  width: 40px;
+
+/* =========================================================
+   LOGO BANK INDONESIA
+========================================================= */
+
+.bi-logo {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.bi-logo img {
+  display: block;
+
+  width: 140px;
+
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   PEMBATAS LOGO
+========================================================= */
+
+.brand-divider {
+  width: 1px;
+
+  height: 34px;
+
+  background: #dfe4e8;
+}
+
+
+/* =========================================================
+   LOGO CBPR
+========================================================= */
+
+.cbpr-logo {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.cbpr-logo img {
+  display: block;
+
+  width: 65px;
+
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   MENU NAVBAR
+   BENAR-BENAR DI TENGAH
+========================================================= */
+
+.custom-nav {
+  position: absolute;
+
+  left: 50%;
+
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   BUTTON MENU
+========================================================= */
+
+.custom-nav-link {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 105px;
+
   height: 40px;
 
-  display: flex;
+  padding:
+    0 18px;
 
-  align-items: center;
-  justify-content: center;
+  color: #68727d;
+
+  background: transparent;
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.7);
+    transparent;
 
-  border-radius: 50%;
+  border-radius: 8px;
 
-  font-family: Georgia, serif;
+  font-size: 13px;
 
-  font-size: 17px;
+  font-weight: 600;
 
-  font-weight: bold;
-}
-
-.brand strong {
-  display: block;
-
-  font-family: Georgia, serif;
-
-  font-size: 14px;
-
-  letter-spacing: 0.4px;
-}
-
-.brand span {
-  display: block;
-
-  margin-top: 3px;
-
-  color:
-    rgba(255, 255, 255, 0.7);
-
-  font-size: 9px;
+  transition:
+    color .25s ease,
+    background .25s ease,
+    border-color .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
 }
 
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+/* =========================================================
+   HOVER BUTTON
+========================================================= */
 
-nav {
+.custom-nav-link:hover {
+  color: #315d99;
+
+  background: #f1f6fb;
+
+  border-color: #dce8f2;
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 4px 12px
+    rgba(49, 93, 153, 0.06);
+}
+
+
+/* =========================================================
+   MENU AKTIF
+========================================================= */
+
+.custom-nav-link.active {
+  color: #315d99;
+
+  background: #f1f6fb;
+
+  border-color: #d5e3ef;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 4px 12px
+    rgba(49, 93, 153, 0.05);
+}
+
+
+/* =========================================================
+   GARIS BIRU MENU AKTIF
+========================================================= */
+
+.custom-nav-link.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 18px;
+
+  right: 18px;
+
+  bottom: -1px;
+
+  height: 2px;
+
+  background: #315d99;
+
+  border-radius:
+    3px 3px 0 0;
+}
+
+
+/* =========================================================
+   MOBILE TOGGLER
+========================================================= */
+
+.custom-toggler {
+  display: none;
+
+  border: none !important;
+
+  box-shadow: none !important;
+
+  padding: 8px;
+
+  margin-left: auto;
+}
+
+.custom-toggler:focus {
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   RUNNING TEXT
+========================================================= */
+
+.rupiah-ticker {
+  position: relative;
+
+  width: 100%;
+
+  height: 25px;
+
+  overflow: hidden;
+
   display: flex;
 
   align-items: center;
 
-  gap: 4px;
+  background: #f3f4f5;
+
+  border-bottom:
+    1px solid
+    #e1e4e7;
+
+  white-space: nowrap;
 }
 
-nav a {
-  padding:
-    10px 17px;
 
-  color:
-    rgba(255, 255, 255, 0.9);
+/* =========================================================
+   TICKER TRACK
+========================================================= */
 
-  text-decoration: none;
+.ticker-track {
+  display: flex;
+
+  align-items: center;
+
+  width: max-content;
+
+  height: 100%;
+
+  animation:
+    tickerMove 38s
+    linear infinite;
+}
+
+
+/* =========================================================
+   TICKER CONTENT
+========================================================= */
+
+.ticker-content {
+  display: flex;
+
+  align-items: center;
+
+  height: 100%;
+
+  flex-shrink: 0;
+
+  white-space: nowrap;
+
+  padding-right: 30px;
+
+  color: #59636d;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   font-size: 12px;
 
-  border-radius: 8px;
+  font-weight: 500;
 
-  transition:
-    all 0.25s ease;
-}
+  line-height: 18px;
 
-nav a:hover {
-  color: white;
-
-  background:
-    rgba(255, 255, 255, 0.14);
-
-  transform:
-    translateY(-1px);
+  letter-spacing: 0.1px;
 }
 
 
-/* =====================================================
-   HEADER
-===================================================== */
+/* =========================================================
+   ICON TICKER
+========================================================= */
+
+.ticker-icon {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin:
+    0 20px;
+
+  color: #e4b72d;
+
+  font-size: 10px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ANIMASI TICKER
+========================================================= */
+
+@keyframes tickerMove {
+
+  from {
+    transform:
+      translateX(0);
+  }
+
+  to {
+    transform:
+      translateX(-50%);
+  }
+
+}
+
+
+/* =========================================================
+   HERO / HEADER
+========================================================= */
 
 .header {
-  width:
-    min(1180px, calc(100% - 60px));
+  position: relative;
 
-  margin: auto;
+  width: 100%;
+
+  min-height: 500px;
+
+  margin: 0;
 
   padding:
-    55px 0 32px;
+    70px 7%;
 
   display: flex;
 
-  align-items: flex-end;
+  align-items: center;
 
   justify-content: space-between;
+
+  gap: 30px;
+
+  overflow: hidden;
+
+  background-image:
+    linear-gradient(
+      rgba(4, 45, 75, 0.35),
+      rgba(4, 45, 75, 0.35)
+    ),
+    url("/images/background-rupiah.png");
+
+  background-size: cover;
+
+  background-position: center 100%;
+
+  background-repeat: no-repeat;
 }
 
-.eyebrow {
-  color: #39769e;
 
-  font-size: 9px;
+/* =========================================================
+   HERO OVERLAY
+========================================================= */
+
+.header::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 40, 75, 0.55) 0%,
+      rgba(0, 40, 75, 0.20) 45%,
+      rgba(0, 40, 75, 0.08) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER CONTENT
+========================================================= */
+
+.header-left {
+  position: relative;
+
+  z-index: 2;
+
+  animation:
+    fadeUp .8s .15s both;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.header .eyebrow {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #f0d16b;
+
+  font-size: 10px;
 
   font-weight: 700;
 
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
 
   text-transform: uppercase;
+
+  text-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, .3);
 }
 
-.header h1 {
-  margin:
-    10px 0 5px;
 
-  color: #142536;
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.header h1 {
+  color: #ffffff;
 
   font-family:
     Georgia,
     "Times New Roman",
     serif;
 
-  font-size: 40px;
+  font-size:
+    clamp(42px, 5vw, 62px);
 
   line-height: 1;
 
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
+
+  margin-bottom: 12px;
+
+  text-shadow:
+    0 4px 15px
+    rgba(0, 0, 0, .35);
 }
+
+
+/* =========================================================
+   HERO DESCRIPTION
+========================================================= */
 
 .header p {
-  margin: 0;
+  color:
+    rgba(255, 255, 255, .92);
 
-  color: #7b8995;
+  font-size: 14px;
 
-  font-size: 13px;
+  text-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, .3);
 }
 
+
+/* =========================================================
+   TAHUN EMISI
+========================================================= */
+
 .year {
+  position: relative;
+
+  z-index: 2;
+
   text-align: right;
+
+  padding:
+    15px 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, .28);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, .12);
+
+  backdrop-filter:
+    blur(8px);
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, .08);
 }
 
 .year span {
@@ -254,67 +629,203 @@ nav a:hover {
 
   margin-bottom: 5px;
 
-  color: #8996a0;
+  color:
+    rgba(255, 255, 255, .78);
 
-  font-size: 9px;
+  font-size: 8px;
+
+  letter-spacing: 1.8px;
+
+  text-transform: uppercase;
+}
+
+.year strong {
+  color: #ffffff;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 29px;
+
+  text-shadow:
+    0 2px 10px
+    rgba(0, 0, 0, .3);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+  width:
+    min(1300px, calc(100% - 50px));
+  margin-top: 50px;
+  margin: 0 auto;
+  padding: 33px;
+}
+
+
+/* =========================================================
+   COIN CARD
+========================================================= */
+
+.coin-card {
+  width: 100%;
+  max-width: 720px;
+
+  min-height: 500px;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(90, 137, 164, .22);
+
+  border-radius: 22px;
+
+  background:
+    rgba(255, 255, 255, .9);
+
+  box-shadow:
+    0 30px 80px
+    rgba(31, 76, 104, .13);
+
+  backdrop-filter: blur(18px);
+
+  animation:
+    cardEnter .9s .25s both;
+}
+
+/* =========================================================
+   COIN LAYOUT
+   KIRI - COIN - KANAN
+========================================================= */
+
+.coin-layout {
+  width: 100%;
+  max-width: 1250px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: 180px minmax(0, 720px) 180px;
+
+  align-items: stretch;
+
+  justify-content: center;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   CARD KETERANGAN UANG
+========================================================= */
+
+.money-side-card {
+  width: 100%;
+  height: 500px;
+
+  padding: 30px 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  border: 1px solid #dce5ea;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f4f9fc
+    );
+
+  box-shadow:
+    0 15px 40px
+    rgba(40, 65, 80, .08);
+
+  text-align: center;
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+
+/* =========================================================
+   HOVER CARD
+========================================================= */
+
+.money-side-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 20px 45px
+    rgba(40, 65, 80, .15);
+}
+
+
+/* =========================================================
+   INFORMASI DALAM CARD
+========================================================= */
+
+.money-info {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+/* LABEL */
+
+.money-info span {
+  color: #7191a6;
+
+  font-size: 8px;
+
+  font-weight: 700;
 
   letter-spacing: 1.5px;
 
   text-transform: uppercase;
 }
 
-.year strong {
-  color: #075c9f;
+
+/* NILAI */
+
+.money-info strong {
+  color: #1c2d38;
 
   font-family:
     Georgia,
     serif;
 
-  font-size: 30px;
+  font-size: 17px;
 }
 
 
-/* =====================================================
-   MAIN
-===================================================== */
-
-.main {
-  width: min(1000px, calc(100% - 60px));
-  margin: auto;
-  padding-bottom: 50px;
-}
-
-
-/* ==================================
-   COIN CARD
-================================== */
-
-.coin-card {
-  width: 100%;
-  overflow: hidden;
-
-  border: 1px solid rgba(112, 157, 183, 0.32);
-
-  border-radius: 20px;
-
-  background: rgba(255, 255, 255, 0.88);
-
-  box-shadow:
-    0 25px 70px rgba(0, 40, 80, 0.15);
-
-  backdrop-filter: blur(15px);
-}
-
-
-/* =====================================================
+/* =========================================================
    COIN HEADER
-===================================================== */
+========================================================= */
 
 .coin-header {
-  min-height: 78px;
+  min-height: 100px;
 
   padding:
-    18px 26px;
+    17px 25px;
 
   display: flex;
 
@@ -322,35 +833,34 @@ nav a:hover {
 
   justify-content: space-between;
 
+  border-bottom:
+    1px solid
+    #e3e9ed;
+
   background:
     linear-gradient(
       180deg,
-      #ffffff 0%,
-      #f8fbfd 100%
+      #ffffff,
+      #f8fbfd
     );
-
-  border-bottom:
-    1px solid
-    #e2e8ed;
 }
 
-.coin-header > div:first-child span {
+.coin-header > div:first-child > span {
   color: #7191a6;
 
   font-size: 8px;
 
   font-weight: 600;
 
-  letter-spacing: 1.5px;
+  letter-spacing: 1.7px;
 
   text-transform: uppercase;
 }
 
 .coin-header h2 {
-  margin:
-    5px 0 0;
+  margin-top: 5px;
 
-  color: #172936;
+  color: #182a36;
 
   font-family:
     Georgia,
@@ -359,6 +869,11 @@ nav a:hover {
   font-size: 19px;
 }
 
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .status {
   display: flex;
 
@@ -366,16 +881,17 @@ nav a:hover {
 
   gap: 7px;
 
-  color: #72818c;
+  color: #788994;
 
   font-size: 9px;
 
-  letter-spacing: 0.3px;
+  letter-spacing: .7px;
 }
 
 .status i {
-  width: 7px;
-  height: 7px;
+  width: 10px;
+
+  height: 10px;
 
   border-radius: 50%;
 
@@ -383,55 +899,57 @@ nav a:hover {
 
   box-shadow:
     0 0 12px
-    rgba(34, 181, 115, 0.6);
+    rgba(34,181,115,.6);
+
+  animation:
+    statusPulse 1.8s infinite;
 }
 
 
-/* =====================================================
-   3D COIN VIEWER
-===================================================== */
+/* =========================================================
+   COIN VIEWER
+========================================================= */
 
 .coin-viewer {
   position: relative;
 
-  height: 540px;
+  width: 100%;
+
+  max-width: 720px;
+
+  height: 400px;
+
+  margin: 0 auto;
+
+  overflow: hidden;
 
   background:
-    radial-gradient(
-      circle at center,
-      #eaf5ff 0%,
-      #dcecf8 45%,
-      #cbdfea 100%
+    linear-gradient(
+      135deg,
+      #d8eaf4 0%,
+      #edf7fc 45%,
+      #d5e8f1 100%
     );
 }
 
 
-/* =====================================================
-   SOFT LIGHT EFFECT
-===================================================== */
+/* =========================================================
+   VIEWER LIGHT
+========================================================= */
 
 .coin-viewer::before {
   content: "";
 
   position: absolute;
 
-  width: 600px;
-  height: 600px;
-
-  left: 50%;
-  top: 48%;
-
-  transform:
-    translate(-50%, -50%);
-
-  border-radius: 50%;
+  inset: 0;
 
   background:
-    radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.6) 35%,
-      rgba(255, 255, 255, 0) 72%
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.42),
+      transparent 40%,
+      rgba(83,158,195,.07)
     );
 
   pointer-events: none;
@@ -440,9 +958,9 @@ nav a:hover {
 }
 
 
-/* =====================================================
-   SUBTLE GRID
-===================================================== */
+/* =========================================================
+   VIEWER GRID
+========================================================= */
 
 .coin-viewer::after {
   content: "";
@@ -451,37 +969,45 @@ nav a:hover {
 
   inset: 0;
 
-  opacity: 0.18;
+  opacity: .13;
 
   background-image:
     linear-gradient(
-      rgba(38, 100, 135, 0.06) 1px,
+      rgba(30,90,125,.06) 1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      rgba(38, 100, 135, 0.06) 1px,
+      rgba(30,90,125,.06) 1px,
       transparent 1px
     );
 
   background-size:
-    55px 55px;
+    60px 60px;
 
   pointer-events: none;
 
-  z-index: 0;
+  z-index: 1;
 }
 
 
-/* =====================================================
-   THREE.JS CANVAS
-===================================================== */
+/* =========================================================
+   3D CONTAINER
+========================================================= */
 
-.coin-viewer canvas {
-  position: relative;
+.coin-3d-container {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
 
   z-index: 2;
+}
 
+.coin-3d-container canvas {
   display: block;
 
   width: 100% !important;
@@ -490,17 +1016,18 @@ nav a:hover {
 }
 
 
-/* =====================================================
+/* =========================================================
    INSTRUCTION
-===================================================== */
+========================================================= */
 
 .instruction {
   position: absolute;
 
-  z-index: 10;
-
   left: 50%;
-  bottom: 20px;
+
+  bottom: 10px;
+
+  z-index: 10;
 
   transform:
     translateX(-50%);
@@ -509,48 +1036,52 @@ nav a:hover {
 
   align-items: center;
 
-  gap: 10px;
+  gap: 9px;
 
   padding:
-    11px 19px;
+    7px 14px;
 
   border:
     1px solid
-    rgba(30, 65, 90, 0.15);
+    rgba(55,94,117,.13);
 
   border-radius: 30px;
 
   background:
-    rgba(255, 255, 255, 0.92);
+    rgba(255,255,255,.9);
 
-  color: #657580;
+  color: #71818c;
 
-  font-size: 10px;
+  font-size: 8px;
 
   white-space: nowrap;
 
   box-shadow:
     0 10px 30px
-    rgba(30, 55, 70, 0.14);
+    rgba(36,70,90,.1);
 
   backdrop-filter:
     blur(12px);
+
+  animation:
+    instructionFloat 3s
+    ease-in-out infinite;
 }
 
 .mouse-icon {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .instruction b {
-  color: #b28a3c;
+  color: #bd9040;
 
   font-weight: normal;
 }
 
 
-/* =====================================================
+/* =========================================================
    INFORMATION
-===================================================== */
+========================================================= */
 
 .information {
   display: grid;
@@ -560,79 +1091,81 @@ nav a:hover {
 
   gap: 1px;
 
-  background:
-    #dce5eb;
+  background: #dce5ea;
 
   border-top:
     1px solid
-    #dce5eb;
+    #dce5ea;
 }
 
 .info-card {
-  min-height: 96px;
+  min-height: 92px;
 
   padding:
-    20px 19px;
+    19px 17px;
 
   background:
     linear-gradient(
       180deg,
-      #ffffff 0%,
-      #f8fbfd 100%
+      #ffffff,
+      #f8fbfd
     );
 
   transition:
-    background 0.25s ease;
+    background .3s ease;
 }
 
 .info-card:hover {
   background:
     linear-gradient(
       180deg,
-      #ffffff 0%,
-      #f0f7fb 100%
+      #ffffff,
+      #edf6fb
     );
-}
-
-.info-card:last-child {
-  border-right: none;
 }
 
 .info-card span {
   display: block;
 
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 
   color: #8b9aa5;
 
-  font-size: 9px;
+  font-size: 8px;
 
-  letter-spacing: 0.6px;
+  letter-spacing: 1px;
 
   text-transform: uppercase;
 }
 
 .info-card strong {
-  color: #1d2b35;
+  color: #1c2d38;
 
   font-family:
     Georgia,
     serif;
 
-  font-size: 15px;
+  font-size: 14px;
 }
 
 
-/* =====================================================
+/* =========================================================
    EDUCATION
-===================================================== */
+========================================================= */
 
 .education {
-  margin-top: 80px;
+  width:
+    min(1100px, calc(100% - 50px));
+
+  margin:
+    80px auto 0;
+
+  padding-bottom:
+    90px;
 }
 
 .section-title {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 
   text-align: center;
 }
@@ -642,38 +1175,36 @@ nav a:hover {
 
   font-size: 9px;
 
-  font-weight: 600;
+  font-weight: 700;
 
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
 
   text-transform: uppercase;
 }
 
 .section-title h2 {
   margin:
-    9px 0 7px;
+    9px 0 8px;
 
-  color: #1a2730;
+  color: #1b2b35;
 
   font-family:
     Georgia,
     serif;
 
-  font-size: 30px;
+  font-size: 31px;
 }
 
 .section-title p {
-  margin: 0;
-
-  color: #788792;
+  color: #7b8b96;
 
   font-size: 12px;
 }
 
 
-/* =====================================================
+/* =========================================================
    EDUCATION GRID
-===================================================== */
+========================================================= */
 
 .education-grid {
   display: grid;
@@ -684,10 +1215,15 @@ nav a:hover {
   gap: 17px;
 }
 
+
+/* =========================================================
+   EDUCATION CARD
+========================================================= */
+
 .education-card {
   position: relative;
 
-  min-height: 190px;
+  min-height: 200px;
 
   padding: 26px;
 
@@ -695,25 +1231,66 @@ nav a:hover {
 
   border:
     1px solid
-    #dce4e9;
+    #dce5ea;
 
   border-radius: 18px;
 
   background:
     linear-gradient(
       145deg,
-      #ffffff 0%,
-      #f4f8fb 100%
+      #ffffff,
+      #f5f9fb
     );
 
   box-shadow:
     0 12px 35px
-    rgba(40, 60, 75, 0.07);
+    rgba(40,65,80,.06);
 
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    transform .4s
+    cubic-bezier(.16,1,.3,1),
+    box-shadow .4s ease,
+    border-color .4s ease;
+}
+
+.education-card::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 0;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #075b9f,
+      #68bce4
+    );
+
+  transition:
+    width .4s ease;
+}
+
+.education-card:hover {
+  transform:
+    translateY(-7px);
+
+  border-color:
+    #c5dce9;
+
+  box-shadow:
+    0 22px 45px
+    rgba(40,65,80,.12);
+}
+
+.education-card:hover::after {
+  width: 100%;
 }
 
 .education-card::before {
@@ -721,32 +1298,24 @@ nav a:hover {
 
   position: absolute;
 
-  width: 110px;
-  height: 110px;
+  width: 120px;
 
-  right: -35px;
-  top: -35px;
+  height: 120px;
+
+  right: -45px;
+
+  top: -45px;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(7, 91, 159, 0.08),
-      rgba(7, 91, 159, 0)
+      rgba(7,91,159,.08),
+      transparent 70%
     );
-}
 
-.education-card:hover {
-  transform:
-    translateY(-6px);
-
-  border-color:
-    #c8dce8;
-
-  box-shadow:
-    0 20px 45px
-    rgba(40, 60, 75, 0.13);
+  pointer-events: none;
 }
 
 .card-number {
@@ -756,14 +1325,16 @@ nav a:hover {
     Georgia,
     serif;
 
-  font-size: 12px;
+  font-size: 11px;
 
   font-weight: bold;
+
+  letter-spacing: 1px;
 }
 
 .education-card h3 {
   margin:
-    18px 0 8px;
+    28px 0 8px;
 
   color: #1d2b35;
 
@@ -771,102 +1342,328 @@ nav a:hover {
     Georgia,
     serif;
 
-  font-size: 19px;
+  font-size: 18px;
 }
 
 .education-card p {
-  margin: 0;
-
   color: #74838d;
 
   font-size: 11px;
 
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 
-/* =====================================================
+/* =========================================================
    FOOTER
-===================================================== */
+========================================================= */
 
 footer {
-  background:
-    linear-gradient(
-      135deg,
-      #075b9f 0%,
-      #064b83 100%
-    );
+  min-height: 105px;
 
-  color: white;
-
-  box-shadow:
-    0 -10px 30px
-    rgba(0, 65, 110, 0.08);
-}
-
-.footer-inner {
-  width:
-    min(1180px, calc(100% - 60px));
-
-  min-height: 100px;
-
-  margin: auto;
+  padding:
+    25px 5%;
 
   display: flex;
 
   align-items: center;
 
   justify-content: space-between;
+
+  gap: 30px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #075b9f,
+      #064b83
+    );
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.15);
+}
+
+.footer-inner {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+.footer-brand {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
 }
 
 .footer-brand strong {
-  display: block;
-
   font-family:
     Georgia,
     serif;
 
-  font-size: 15px;
+  font-size: 14px;
+
+  letter-spacing: .5px;
 }
 
 .footer-brand span {
-  display: block;
-
-  margin-top: 4px;
-
   color:
-    rgba(255, 255, 255, 0.65);
+    rgba(255,255,255,.62);
 
   font-size: 9px;
 }
 
 .footer-right {
   color:
-    rgba(255, 255, 255, 0.65);
+    rgba(255,255,255,.62);
 
   font-size: 9px;
+
+  letter-spacing: .4px;
 }
 
 
-/* =====================================================
-   RESPONSIVE - TABLET
-===================================================== */
+/* =========================================================
+   ANIMATIONS
+========================================================= */
 
-@media (max-width: 900px) {
+@keyframes fadeUp {
 
-  .top-inner {
-    width:
-      calc(100% - 40px);
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes cardEnter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(30px)
+      scale(.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes statusPulse {
+
+  0%,
+  100% {
+    opacity: .45;
+
+    transform:
+      scale(.8);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.15);
+  }
+
+}
+
+
+@keyframes instructionFloat {
+
+  0%,
+  100% {
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      translateY(-3px);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .navbar-container {
+    padding-left: 20px;
+
+    padding-right: 20px;
+  }
+
+  .navbar-left {
+    margin-left: 10px;
+  }
+
+  .bi-logo img {
+    width: 140px;
+  }
+
+  .cbpr-logo img {
+    width: 75px;
+  }
+
+  .custom-nav {
+    gap: 4px;
+  }
+
+  .custom-nav-link {
+    min-width: 95px;
+
+    padding:
+      0 12px;
+
+    font-size: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET KECIL
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .navbar-container {
+    min-height: 68px;
+  }
+
+  .navbar-left {
+    margin-left: 0;
+
+    gap: 12px;
+  }
+
+  .bi-logo img {
+    width: 135px;
+  }
+
+  .cbpr-logo img {
+    width: 70px;
+  }
+
+  .brand-divider {
+    height: 28px;
+  }
+
+  .custom-toggler {
+    display: block;
+  }
+
+  .navbar-collapse {
+    position: absolute;
+
+    top: 68px;
+
+    left: 0;
+
+    right: 0;
+
+    padding:
+      10px 20px 15px;
+
+    background: #ffffff;
+
+    border-top:
+      1px solid
+      #e6ebef;
+
+    box-shadow:
+      0 12px 25px
+      rgba(30,70,100,.08);
+  }
+
+  .custom-nav {
+    position: static;
+
+    transform: none;
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 6px;
+  }
+
+  .custom-nav-link {
+    width: 100%;
+
+    min-width: 0;
+
+    height: 42px;
+
+    justify-content: flex-start;
+
+    padding:
+      0 16px;
+  }
+
+  .custom-nav-link.active::after {
+    left: 16px;
+
+    right: auto;
+
+    width: 35px;
   }
 
   .header {
-    width:
-      calc(100% - 40px);
+    width: 100%;
+
+    min-height: 330px;
+
+    padding:
+      55px 35px;
   }
 
   .main {
     width:
-      calc(100% - 40px);
+      calc(100% - 35px);
+  }
+
+  .education {
+    width:
+      calc(100% - 35px);
   }
 
   .information {
@@ -882,54 +1679,105 @@ footer {
 }
 
 
-/* =====================================================
-   RESPONSIVE - MOBILE
-===================================================== */
+/* =========================================================
+   MOBILE
+========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
 
-  .top-inner {
-    width:
-      calc(100% - 30px);
+  .navbar-container {
+    min-height: 65px;
 
-    min-height: 60px;
+    padding:
+      0 15px;
   }
 
-  nav {
+  .bi-logo img {
+    width: 125px;
+  }
+
+  .cbpr-logo img {
+    width: 62px;
+  }
+
+  .brand-divider {
     display: none;
   }
 
-  .header {
-    width:
-      calc(100% - 30px);
+  .navbar-collapse {
+    top: 65px;
 
     padding:
-      30px 0 25px;
+      10px 15px 15px;
+  }
+
+
+  /* TICKER MOBILE */
+
+  .rupiah-ticker {
+    height: 25px;
+  }
+
+  .ticker-content {
+    font-size: 10px;
+
+    line-height: 18px;
+  }
+
+
+  /* HERO MOBILE */
+
+  .header {
+    width: 100%;
+
+    min-height: 300px;
+
+    padding:
+      45px 25px;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+    background-position:
+      center center;
   }
 
   .header h1 {
-    font-size: 30px;
+    font-size: 38px;
   }
 
   .header p {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .year {
-    display: none;
+    text-align: left;
   }
+
+
+  /* MAIN */
 
   .main {
     width:
-      calc(100% - 30px);
+      calc(100% - 25px);
   }
 
+
+  /* COIN */
+
   .coin-card {
-    border-radius: 18px;
+    border-radius: 17px;
   }
 
   .coin-viewer {
-    height: 500px;
+    width: 100%;
+
+    height: 180px;
   }
 
   .coin-header {
@@ -940,6 +1788,13 @@ footer {
   .coin-header h2 {
     font-size: 16px;
   }
+
+  .status {
+    display: none;
+  }
+
+
+  /* INFORMATION */
 
   .information {
     grid-template-columns:
@@ -956,36 +1811,95 @@ footer {
     font-size: 13px;
   }
 
+
+  /* INSTRUCTION */
+
   .instruction {
-    bottom: 15px;
+    max-width:
+      calc(100% - 20px);
 
     padding:
-      9px 12px;
+      7px 10px;
 
-    font-size: 8px;
+    gap: 6px;
+
+    font-size: 7px;
   }
 
+
+  /* EDUCATION */
+
   .education {
+    width:
+      calc(100% - 25px);
+
     margin-top: 55px;
+
+    padding-bottom:
+      60px;
   }
 
   .section-title h2 {
     font-size: 25px;
   }
 
-  .footer-inner {
-    width:
-      calc(100% - 30px);
 
-    min-height: 90px;
+  /* FOOTER */
+
+  footer {
+    min-height: 120px;
+
+    padding: 25px;
 
     flex-direction: column;
 
     align-items: flex-start;
+  }
 
-    justify-content: center;
+  .footer-inner {
+    align-items: flex-start;
 
-    gap: 7px;
+    flex-direction: column;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .bi-logo img {
+    width: 110px;
+  }
+
+  .cbpr-logo img {
+    width: 55px;
+  }
+
+  .custom-nav-link {
+    font-size: 11px;
+  }
+
+  .header {
+    min-height: 280px;
+
+    padding:
+      40px 20px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+  }
+
+  .coin-viewer {
+    height: 180px;
+  }
+
+  .instruction {
+    font-size: 6.5px;
   }
 
 }

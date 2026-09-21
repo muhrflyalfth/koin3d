@@ -2,7 +2,13 @@ import { Canvas, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
-function CoinModel() {
+
+/* =========================================================
+   MODEL KOIN
+========================================================= */
+
+function CoinModel({ side }) {
+
   const frontTexture = useLoader(
     THREE.TextureLoader,
     "/textures/koin1000-depan.jpg"
@@ -13,33 +19,72 @@ function CoinModel() {
     "/textures/koin1000-belakang.jpg"
   );
 
-  // ==============================
-  // KUALITAS TEKSTUR
-  // ==============================
 
-  frontTexture.colorSpace = THREE.SRGBColorSpace;
-  backTexture.colorSpace = THREE.SRGBColorSpace;
+  /* =========================================================
+     TEXTURE
+  ========================================================= */
+
+  frontTexture.colorSpace =
+    THREE.SRGBColorSpace;
+
+  backTexture.colorSpace =
+    THREE.SRGBColorSpace;
 
   frontTexture.anisotropy = 16;
   backTexture.anisotropy = 16;
 
-  frontTexture.wrapS = THREE.ClampToEdgeWrapping;
-  frontTexture.wrapT = THREE.ClampToEdgeWrapping;
+  frontTexture.wrapS =
+    THREE.ClampToEdgeWrapping;
 
-  backTexture.wrapS = THREE.ClampToEdgeWrapping;
-  backTexture.wrapT = THREE.ClampToEdgeWrapping;
+  frontTexture.wrapT =
+    THREE.ClampToEdgeWrapping;
+
+  backTexture.wrapS =
+    THREE.ClampToEdgeWrapping;
+
+  backTexture.wrapT =
+    THREE.ClampToEdgeWrapping;
+
 
   return (
+
     <group
-      rotation={[Math.PI / 2, 0, 0]}
-      scale={[0.6, 0.6, 0.6]}
+
+      /*
+       * KOIN DIBUAT TEGAK
+       *
+       * Sumbu Y = atas / bawah
+       * Sumbu Z = menghadap kamera
+       *
+       * Tidak menggunakan Math.PI / 2
+       * agar koin tidak miring.
+       */
+
+      rotation={[
+        0,
+        side === "back"
+          ? Math.PI
+          : 0,
+        0
+      ]}
+
+      scale={[
+        0.82,
+        0.82,
+        0.82
+      ]}
+
     >
 
-      {/* ==============================
-          BADAN KOIN
-      ============================== */}
 
-      <mesh castShadow receiveShadow>
+      {/* =====================================================
+          BADAN KOIN
+      ===================================================== */}
+
+      <mesh
+        castShadow
+        receiveShadow
+      >
 
         <cylinderGeometry
           args={[
@@ -51,188 +96,191 @@ function CoinModel() {
           ]}
         />
 
-        {/* SAMPING */}
+
+        {/* =================================================
+            SISI / TEPI KOIN
+        ================================================= */}
+
         <meshStandardMaterial
           attach="material-0"
           color="#bfc3c5"
-          metalness={0.95}
-          roughness={0.24}
+          metalness={0.96}
+          roughness={0.22}
         />
 
-        {/* DEPAN */}
+
+        {/* =================================================
+            DEPAN KOIN
+        ================================================= */}
+
         <meshStandardMaterial
           attach="material-1"
           map={frontTexture}
-          metalness={0.75}
-          roughness={0.34}
+          metalness={0.72}
+          roughness={0.32}
         />
 
-        {/* BELAKANG */}
+
+        {/* =================================================
+            BELAKANG KOIN
+        ================================================= */}
+
         <meshStandardMaterial
           attach="material-2"
           map={backTexture}
-          metalness={0.75}
-          roughness={0.34}
+          metalness={0.72}
+          roughness={0.32}
         />
 
       </mesh>
 
-
-      {/* ==============================
-          RING DEPAN
-      ============================== */}
-
-      <mesh position={[0, 0, 0.17]}>
-
-        <torusGeometry
-          args={[
-            2.18,
-            0.055,
-            16,
-            128
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#d7d9da"
-          metalness={1}
-          roughness={0.18}
-        />
-
-      </mesh>
-
-
-      {/* ==============================
-          RING BELAKANG
-      ============================== */}
-
-      <mesh position={[0, 0, -0.17]}>
-
-        <torusGeometry
-          args={[
-            2.18,
-            0.055,
-            16,
-            128
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#9fa4a7"
-          metalness={1}
-          roughness={0.2}
-        />
-
-      </mesh>
 
     </group>
+
   );
 }
 
 
-/* =====================================
+/* =========================================================
    COIN 3D
-===================================== */
+========================================================= */
 
-export default function Coin3D() {
+export default function Coin3D({
+  side = "front"
+}) {
 
   return (
 
-    <div
-      style={{
-        width: "220px",
-        height: "220px",
-        margin: "0 auto",
-        borderRadius: "50%",
-        overflow: "hidden",
-        background: "#063b66",
-      }}
-    >
+    <div className="coin-3d-container">
 
       <Canvas
+
         shadows
-        dpr={[1, 2]}
+
+        dpr={[
+          1,
+          2
+        ]}
+
         camera={{
-          position: [0, 0, 6.8],
-          fov: 40,
+          position: [
+            0,
+            0,
+            6.8
+          ],
+
+          fov: 40
         }}
+
         gl={{
           antialias: true,
-          alpha: true,
+          alpha: true
         }}
+
       >
 
-        {/* ==============================
-            AMBIENT
-        ============================== */}
 
-        <ambientLight intensity={2.2} />
+        {/* =================================================
+            LIGHTING
+        ================================================= */}
 
+        <ambientLight
+          intensity={2.1}
+        />
 
-        {/* ==============================
-            CAHAYA UTAMA
-        ============================== */}
 
         <directionalLight
-          position={[5, 6, 7]}
+          position={[
+            5,
+            6,
+            7
+          ]}
           intensity={4}
           castShadow
         />
 
 
-        {/* ==============================
-            CAHAYA KIRI
-        ============================== */}
-
         <directionalLight
-          position={[-5, 2, 5]}
+          position={[
+            -5,
+            2,
+            5
+          ]}
           intensity={2.2}
         />
 
 
-        {/* ==============================
-            CAHAYA DEPAN
-        ============================== */}
-
         <pointLight
-          position={[0, 2, 6]}
+          position={[
+            0,
+            2,
+            6
+          ]}
           intensity={1.5}
         />
 
 
-        {/* ==============================
-            CAHAYA BELAKANG
-        ============================== */}
-
         <directionalLight
-          position={[0, -3, -5]}
+          position={[
+            0,
+            -3,
+            -5
+          ]}
           intensity={1.2}
         />
 
 
-        {/* ==============================
+        {/* =================================================
             KOIN
-        ============================== */}
+        ================================================= */}
 
-        <CoinModel />
+        <CoinModel
+          side={side}
+        />
 
 
-        {/* ==============================
-            INTERAKSI
-        ============================== */}
+        {/* =================================================
+            CONTROL
+        ================================================= */}
 
         <OrbitControls
+
+          /*
+           * Tidak bisa geser posisi koin
+           */
           enablePan={false}
+
+
+          /*
+           * Zoom tetap aktif
+           */
           enableZoom={true}
 
-          minDistance={3.8}
+
+          minDistance={3.5}
+
           maxDistance={9}
 
+
+          /*
+           * Kecepatan putar
+           */
           rotateSpeed={0.65}
+
+
+          /*
+           * Kecepatan zoom
+           */
           zoomSpeed={0.8}
 
-          enableDamping
+
+          /*
+           * Gerakan lebih halus
+           */
+          enableDamping={true}
+
           dampingFactor={0.06}
+
         />
 
       </Canvas>
