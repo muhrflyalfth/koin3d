@@ -4,82 +4,43 @@ import * as THREE from "three";
 
 
 /* =========================================================
-   MODEL KOIN
+   MODEL KOIN 3D
 ========================================================= */
 
-function CoinModel({ side }) {
+function CoinModel({ money }) {
 
   const frontTexture = useLoader(
     THREE.TextureLoader,
-    "/textures/koin1000-depan.jpg"
+    money?.front || "/textures/koin1000-depan.jpg"
   );
 
   const backTexture = useLoader(
     THREE.TextureLoader,
-    "/textures/koin1000-belakang.jpg"
+    money?.back || "/textures/koin1000-belakang.jpg"
   );
 
 
-  /* =========================================================
-     TEXTURE
-  ========================================================= */
-
-  frontTexture.colorSpace =
-    THREE.SRGBColorSpace;
-
-  backTexture.colorSpace =
-    THREE.SRGBColorSpace;
+  frontTexture.colorSpace = THREE.SRGBColorSpace;
+  backTexture.colorSpace = THREE.SRGBColorSpace;
 
   frontTexture.anisotropy = 16;
   backTexture.anisotropy = 16;
 
-  frontTexture.wrapS =
-    THREE.ClampToEdgeWrapping;
+  frontTexture.wrapS = THREE.ClampToEdgeWrapping;
+  frontTexture.wrapT = THREE.ClampToEdgeWrapping;
 
-  frontTexture.wrapT =
-    THREE.ClampToEdgeWrapping;
-
-  backTexture.wrapS =
-    THREE.ClampToEdgeWrapping;
-
-  backTexture.wrapT =
-    THREE.ClampToEdgeWrapping;
+  backTexture.wrapS = THREE.ClampToEdgeWrapping;
+  backTexture.wrapT = THREE.ClampToEdgeWrapping;
 
 
   return (
-
     <group
-
-      /*
-       * KOIN DIBUAT TEGAK
-       *
-       * Sumbu Y = atas / bawah
-       * Sumbu Z = menghadap kamera
-       *
-       * Tidak menggunakan Math.PI / 2
-       * agar koin tidak miring.
-       */
-
-      rotation={[
-        0,
-        side === "back"
-          ? Math.PI
-          : 0,
-        0
-      ]}
-
       scale={[
         0.82,
         0.82,
         0.82
       ]}
-
     >
-
-
-      {/* =====================================================
-          BADAN KOIN
-      ===================================================== */}
 
       <mesh
         castShadow
@@ -96,11 +57,7 @@ function CoinModel({ side }) {
           ]}
         />
 
-
-        {/* =================================================
-            SISI / TEPI KOIN
-        ================================================= */}
-
+        {/* TEPI KOIN */}
         <meshStandardMaterial
           attach="material-0"
           color="#bfc3c5"
@@ -108,11 +65,7 @@ function CoinModel({ side }) {
           roughness={0.22}
         />
 
-
-        {/* =================================================
-            DEPAN KOIN
-        ================================================= */}
-
+        {/* DEPAN */}
         <meshStandardMaterial
           attach="material-1"
           map={frontTexture}
@@ -120,11 +73,7 @@ function CoinModel({ side }) {
           roughness={0.32}
         />
 
-
-        {/* =================================================
-            BELAKANG KOIN
-        ================================================= */}
-
+        {/* BELAKANG */}
         <meshStandardMaterial
           attach="material-2"
           map={backTexture}
@@ -134,9 +83,120 @@ function CoinModel({ side }) {
 
       </mesh>
 
+    </group>
+  );
+}
+
+
+/* =========================================================
+   MODEL UANG KERTAS 3D
+========================================================= */
+
+function BanknoteModel({ money }) {
+
+  if (!money) return null;
+
+
+  const frontTexture = useLoader(
+    THREE.TextureLoader,
+    money.front
+  );
+
+  const backTexture = useLoader(
+    THREE.TextureLoader,
+    money.back
+  );
+
+
+  frontTexture.colorSpace = THREE.SRGBColorSpace;
+  backTexture.colorSpace = THREE.SRGBColorSpace;
+
+  frontTexture.anisotropy = 16;
+  backTexture.anisotropy = 16;
+
+  frontTexture.wrapS = THREE.ClampToEdgeWrapping;
+  frontTexture.wrapT = THREE.ClampToEdgeWrapping;
+
+  backTexture.wrapS = THREE.ClampToEdgeWrapping;
+  backTexture.wrapT = THREE.ClampToEdgeWrapping;
+
+
+  return (
+    <group>
+      rotation={[0, 0, 0]}
+      scale={[1.05, 1.05, 1.05]}
+
+      <mesh
+        castShadow
+        receiveShadow
+      >
+
+        <boxGeometry
+          args={[
+            4.8,
+            2.4,
+            0.10
+          ]}
+        />
+
+
+        {/* =================================================
+            SISI
+        ================================================= */}
+
+        <meshStandardMaterial
+          attach="material-0"
+          color="#d7d7d7"
+          roughness={0.65}
+          metalness={0}
+        />
+
+        <meshStandardMaterial
+          attach="material-1"
+          color="#d7d7d7"
+          roughness={0.65}
+          metalness={0}
+        />
+
+        <meshStandardMaterial
+          attach="material-2"
+          color="#d7d7d7"
+          roughness={0.65}
+          metalness={0}
+        />
+
+        <meshStandardMaterial
+          attach="material-3"
+          color="#d7d7d7"
+          roughness={0.65}
+          metalness={0}
+        />
+
+
+        {/* =================================================
+            DEPAN
+        ================================================= */}
+
+        <meshStandardMaterial
+          attach="material-4"
+          map={frontTexture}
+          color="#d0d0d0"
+        />
+
+
+        {/* =================================================
+            BELAKANG
+        ================================================= */}
+
+        <meshStandardMaterial
+          attach="material-5"
+          map={backTexture}
+          color="#d0d0d0"
+        />
+
+      </mesh>
 
     </group>
-
   );
 }
 
@@ -146,11 +206,10 @@ function CoinModel({ side }) {
 ========================================================= */
 
 export default function Coin3D({
-  side = "front"
+  money = null
 }) {
 
   return (
-
     <div className="coin-3d-container">
 
       <Canvas
@@ -176,9 +235,7 @@ export default function Coin3D({
           antialias: true,
           alpha: true
         }}
-
       >
-
 
         {/* =================================================
             LIGHTING
@@ -187,7 +244,6 @@ export default function Coin3D({
         <ambientLight
           intensity={2.1}
         />
-
 
         <directionalLight
           position={[
@@ -199,7 +255,6 @@ export default function Coin3D({
           castShadow
         />
 
-
         <directionalLight
           position={[
             -5,
@@ -209,7 +264,6 @@ export default function Coin3D({
           intensity={2.2}
         />
 
-
         <pointLight
           position={[
             0,
@@ -218,7 +272,6 @@ export default function Coin3D({
           ]}
           intensity={1.5}
         />
-
 
         <directionalLight
           position={[
@@ -231,12 +284,31 @@ export default function Coin3D({
 
 
         {/* =================================================
-            KOIN
+            MODEL DINAMIS
         ================================================= */}
 
-        <CoinModel
-          side={side}
-        />
+        {money?.type === "coin" ? (
+
+          <CoinModel
+            money={money}
+          />
+
+        ) : money?.type === "banknote" ? (
+
+          <BanknoteModel
+            money={money}
+          />
+
+        ) : (
+
+          <CoinModel
+            money={{
+              front: "/textures/koin1000-depan.jpg",
+              back: "/textures/koin1000-belakang.jpg"
+            }}
+          />
+
+        )}
 
 
         {/* =================================================
@@ -245,38 +317,18 @@ export default function Coin3D({
 
         <OrbitControls
 
-          /*
-           * Tidak bisa geser posisi koin
-           */
           enablePan={false}
 
-
-          /*
-           * Zoom tetap aktif
-           */
           enableZoom={true}
-
 
           minDistance={3.5}
 
           maxDistance={9}
 
-
-          /*
-           * Kecepatan putar
-           */
           rotateSpeed={0.65}
 
-
-          /*
-           * Kecepatan zoom
-           */
           zoomSpeed={0.8}
 
-
-          /*
-           * Gerakan lebih halus
-           */
           enableDamping={true}
 
           dampingFactor={0.06}
@@ -286,6 +338,5 @@ export default function Coin3D({
       </Canvas>
 
     </div>
-
   );
 }
