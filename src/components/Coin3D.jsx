@@ -1,6 +1,24 @@
 import { Canvas, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { useEffect } from "react";
 import * as THREE from "three";
+
+function useConfiguredTextures(frontPath, backPath) {
+  const frontTexture = useLoader(THREE.TextureLoader, frontPath);
+  const backTexture = useLoader(THREE.TextureLoader, backPath);
+
+  useEffect(() => {
+    [frontTexture, backTexture].forEach((texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = 16;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.needsUpdate = true;
+    });
+  }, [frontTexture, backTexture]);
+
+  return { frontTexture, backTexture };
+}
 
 
 /* =========================================================
@@ -9,28 +27,10 @@ import * as THREE from "three";
 
 function CoinModel({ money }) {
 
-  const frontTexture = useLoader(
-    THREE.TextureLoader,
-    money?.front || "/textures/koin1000-depan.jpg"
-  );
-
-  const backTexture = useLoader(
-    THREE.TextureLoader,
+  const { frontTexture, backTexture } = useConfiguredTextures(
+    money?.front || "/textures/koin1000-depan.jpg",
     money?.back || "/textures/koin1000-belakang.jpg"
   );
-
-
-  frontTexture.colorSpace = THREE.SRGBColorSpace;
-  backTexture.colorSpace = THREE.SRGBColorSpace;
-
-  frontTexture.anisotropy = 16;
-  backTexture.anisotropy = 16;
-
-  frontTexture.wrapS = THREE.ClampToEdgeWrapping;
-  frontTexture.wrapT = THREE.ClampToEdgeWrapping;
-
-  backTexture.wrapS = THREE.ClampToEdgeWrapping;
-  backTexture.wrapT = THREE.ClampToEdgeWrapping;
 
 
   return (
@@ -93,38 +93,19 @@ function CoinModel({ money }) {
 ========================================================= */
 
 function BanknoteModel({ money }) {
+  const { frontTexture, backTexture } = useConfiguredTextures(
+    money?.front || "/images/uang-1000.png",
+    money?.back || "/images/1000-belakang.jpg"
+  );
 
   if (!money) return null;
 
 
-  const frontTexture = useLoader(
-    THREE.TextureLoader,
-    money.front
-  );
-
-  const backTexture = useLoader(
-    THREE.TextureLoader,
-    money.back
-  );
-
-
-  frontTexture.colorSpace = THREE.SRGBColorSpace;
-  backTexture.colorSpace = THREE.SRGBColorSpace;
-
-  frontTexture.anisotropy = 16;
-  backTexture.anisotropy = 16;
-
-  frontTexture.wrapS = THREE.ClampToEdgeWrapping;
-  frontTexture.wrapT = THREE.ClampToEdgeWrapping;
-
-  backTexture.wrapS = THREE.ClampToEdgeWrapping;
-  backTexture.wrapT = THREE.ClampToEdgeWrapping;
-
-
   return (
-    <group>
+    <group
       rotation={[0, 0, 0]}
-      scale={[1.05, 1.05, 1.05]}
+      scale={[1.28, 1.28, 1.28]}
+    >
 
       <mesh
         castShadow
@@ -135,7 +116,7 @@ function BanknoteModel({ money }) {
           args={[
             4.8,
             2.4,
-            0.10
+            0.04
           ]}
         />
 
@@ -180,7 +161,9 @@ function BanknoteModel({ money }) {
         <meshStandardMaterial
           attach="material-4"
           map={frontTexture}
-          color="#d0d0d0"
+          color="#a5afb2"
+          roughness={0.74}
+          metalness={0}
         />
 
 
@@ -301,10 +284,10 @@ export default function Coin3D({
 
         ) : (
 
-          <CoinModel
+          <BanknoteModel
             money={{
-              front: "/textures/koin1000-depan.jpg",
-              back: "/textures/koin1000-belakang.jpg"
+              front: "/images/uang-1000.png",
+              back: "/images/1000-belakang.jpg"
             }}
           />
 
@@ -317,17 +300,27 @@ export default function Coin3D({
 
         <OrbitControls
 
-          enablePan={false}
+          enablePan={true}
 
           enableZoom={true}
 
-          minDistance={3.5}
+          minDistance={2.2}
 
           maxDistance={9}
 
+          minPolarAngle={0.15}
+
+          maxPolarAngle={Math.PI - 0.15}
+
+          minAzimuthAngle={-Math.PI}
+
+          maxAzimuthAngle={Math.PI}
+
           rotateSpeed={0.65}
 
-          zoomSpeed={0.8}
+          zoomSpeed={1}
+
+          panSpeed={0.7}
 
           enableDamping={true}
 

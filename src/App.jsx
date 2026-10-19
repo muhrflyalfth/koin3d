@@ -7,20 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const moneyData = [
   // =========================
-  // Rp1.000 KOIN
-  // =========================
-  {
-    id: "coin-1000",
-    image: "/images/koin-1000.jpg",
-    front: "/textures/koin1000-depan.jpg",
-    back: "/textures/koin1000-belakang.jpg",
-    title: "Rp1.000",
-    subtitle: "Koin",
-    type: "coin",
-  },
-
-  // =========================
-  // Rp1.000 KERTAS
+  // UANG KERTAS
   // =========================
 
     {
@@ -29,7 +16,7 @@ const moneyData = [
       front: "/images/uang-1000.png",
       back: "/images/1000-belakang.jpg",
       title: "Rp1.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
 
@@ -39,7 +26,7 @@ const moneyData = [
       front: "/images/uang-2000.png",
       back: "/images/2000-belakang.jpg",
       title: "Rp2.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
 
@@ -49,7 +36,7 @@ const moneyData = [
       front: "/images/uang-5000.png",
       back: "/images/5000-belakang.jpg",
       title: "Rp5.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
 
@@ -59,7 +46,7 @@ const moneyData = [
       front: "/images/uang-10000.png",
       back: "/images/10000-belakang.jpg",
       title: "Rp10.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
 
@@ -69,7 +56,7 @@ const moneyData = [
       front: "/images/uang-20000.png",
       back: "/images/20000-belakang.jpg",
       title: "Rp20.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
 
@@ -79,7 +66,7 @@ const moneyData = [
       front: "/images/uang-50000.png",
       back: "/images/50000-belakang.jpg",
       title: "Rp50.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
 
@@ -89,79 +76,178 @@ const moneyData = [
       front: "/images/uang-100000.png",
       back: "/images/100000-belakang.jpg",
       title: "Rp100.000",
-      subtitle: "Uang Kertas",
+      subtitle: "Uang Kertas TE 2022",
       type: "banknote",
     },
   ];
-  
 
-function MoneySlider() {
+const createHistoricalBanknotes = (year, denominations, variants = {}) =>
+  denominations.flatMap((denomination) => {
+    const imageBase = `/images/${year}/te-${year}-kertas-${denomination}`;
+    const title = `Rp${Number(denomination).toLocaleString("id-ID")}`;
+
+    return [null, variants[denomination]].filter((variant) => variant !== undefined).map((variant) => {
+      const variantLabel = {
+        upgrading: "Upgrading",
+        desainbaru: "Desain Baru",
+      }[variant];
+      const suffix = variant ? `-${variant}` : "";
+
+      return {
+        id: `paper-${year}-${denomination}${suffix}`,
+        image: `${imageBase}-depan${suffix}.jpg`,
+        front: `${imageBase}-depan${suffix}.jpg`,
+        back: `${imageBase}-belakang${suffix}.jpg`,
+        title,
+        variantLabel,
+        subtitle: `Uang Kertas TE ${year}${variantLabel ? ` ${variantLabel}` : ""}`,
+        type: "banknote",
+      };
+    });
+  });
+
+const paper2016Data = createHistoricalBanknotes(2016, [
+  "1000", "2000", "5000", "10000", "20000", "50000", "100000",
+]);
+const paper2014Data = createHistoricalBanknotes(2014, ["100000"]);
+const paper2009Data = createHistoricalBanknotes(2009, ["2000"]);
+const paper2005Data = createHistoricalBanknotes(
+  2005,
+  ["10000", "50000"],
+  { 10000: "desainbaru", 50000: "upgrading" }
+);
+const paper2004Data = createHistoricalBanknotes(
+  2004,
+  ["20000", "100000"],
+  { 20000: "upgrading", 100000: "upgrading" }
+);
+const paper2001Data = createHistoricalBanknotes(2001, ["5000"]);
+const paper2000Data = createHistoricalBanknotes(2000, ["1000"]);
+
+const coinData = [
+  ["1970", "1"],
+  ["1999", "50"],
+  ["2001", "100"],
+  ["2003", "200"],
+  ["2003", "500"],
+  ["2016", "100"],
+  ["2016", "200"],
+  ["2016", "500"],
+].map(([year, denomination]) => {
+  const basePath = `/coin/te-${year}-koin-${denomination}`;
+  const front = `${basePath}-depan.jpg`;
+  const back = `${basePath}-belakang.jpg`;
+
+  return {
+    id: `coin-${year}-${denomination}`,
+    year,
+    image: front,
+    front,
+    back,
+    title: `Rp${Number(denomination).toLocaleString("id-ID")}`,
+    subtitle: `Uang Logam TE ${year}`,
+    type: "coin",
+  };
+});
+
+function MoneySlider({ onSelectMoney, items = moneyData, id = "informasi", animate = false, specimen = false, side = "Depan", direction = "left", combineSides = false }) {
   const trackRef = useRef(null);
   const pausedRef = useRef(false);
+  const moneySides = combineSides
+    ? items.flatMap((money) => [
+        { ...money, side: "Depan", image: money.front || money.image },
+        { ...money, side: "Belakang", image: money.back || money.image },
+      ])
+    : animate
+    ? [...items].reverse().map((money) => ({
+        ...money,
+        side,
+        image: side === "Belakang"
+          ? money.back || money.image
+          : money.front || money.image,
+      }))
+    : items.flatMap((money) => [
+        { ...money, side: "Depan", image: money.front || money.image },
+        { ...money, side: "Belakang", image: money.back },
+      ]);
 
   useEffect(() => {
     const track = trackRef.current;
-
-    if (!track) return;
+    if (!animate || !track || track.children.length < 2) return;
 
     let position = 0;
     let animationFrame;
-
     const speed = 1.5;
+    const gap = 32;
+    const movesRight = direction === "right";
 
-    const animate = () => {
-      // Berhenti ketika cursor berada di atas uang
+    if (movesRight) {
+      const lastCard = track.children[track.children.length - 1];
+      position = -(lastCard.offsetWidth + gap);
+      track.style.transform = `translate3d(${position}px, 0, 0)`;
+    }
+
+    const animateTrack = () => {
       if (!pausedRef.current) {
-        position -= speed;
+        if (movesRight) {
+          position += speed;
+          if (position >= 0) {
+            const lastCard = track.children[track.children.length - 1];
+            if (lastCard) {
+              const moveWidth = lastCard.offsetWidth + gap;
+              track.prepend(lastCard);
+              position -= moveWidth;
+            }
+          }
+        } else {
+          position -= speed;
+          const firstCard = track.children[0];
 
-        const firstCard = track.children[0];
-
-        if (firstCard) {
-          const cardWidth = firstCard.offsetWidth;
-          const gap = 32;
-          const moveWidth = cardWidth + gap;
-
-          if (Math.abs(position) >= moveWidth) {
-            track.appendChild(firstCard);
-            position += moveWidth;
+          if (firstCard) {
+            const moveWidth = firstCard.offsetWidth + gap;
+            if (Math.abs(position) >= moveWidth) {
+              track.appendChild(firstCard);
+              position += moveWidth;
+            }
           }
         }
 
         track.style.transform = `translate3d(${position}px, 0, 0)`;
       }
 
-      animationFrame = requestAnimationFrame(animate);
+      animationFrame = requestAnimationFrame(animateTrack);
     };
 
-    animationFrame = requestAnimationFrame(animate);
-
+    animationFrame = requestAnimationFrame(animateTrack);
     return () => {
       cancelAnimationFrame(animationFrame);
+      track.style.transform = "";
     };
-  }, []);
-
-  const handleMouseEnter = () => {
-    pausedRef.current = true;
-  };
-
-  const handleMouseLeave = () => {
-    pausedRef.current = false;
-  };
+  }, [animate, direction]);
 
   return (
-    <section className="money-slider-section" id="informasi">
-      <div className="money-slider">
+    <section className="money-slider-section" id={id}>
+      <div className={`money-slider${animate ? " money-slider-animated" : ""}`}>
         <div
           className="money-track"
           ref={trackRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => { pausedRef.current = true; }}
+          onMouseLeave={() => { pausedRef.current = false; }}
         >
-          {moneyData.map((money) => (
+          {moneySides.map((money) => (
             <div
-              className="money-card"
-              key={money.id}
+              className={`money-card money-side-card${money.type === "coin" ? " coin-side-card" : ""}`}
+              key={`${money.id}-${money.side}`}
               draggable
+              role="button"
+              tabIndex={0}
+              onClick={() => onSelectMoney(money)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelectMoney(money);
+                }
+              }}
               onDragStart={(e) => {
                 e.dataTransfer.setData(
                   "money",
@@ -169,147 +255,244 @@ function MoneySlider() {
                 );
               }}
             >
-              <img src={money.image} alt={money.title} />
+              <img
+                src={money.image}
+                alt={money.variantLabel ? `${money.title}, ${money.variantLabel}` : money.title}
+              />
+
+              {money.year && (
+                <span className="money-year-badge">{money.year}</span>
+              )}
+
+              {money.variantLabel && (
+                <span className="money-variant-badge">
+                  {money.variantLabel}
+                </span>
+              )}
+
+              {specimen && (
+                <div className="specimen-overlay" aria-hidden="true">
+                  SPESIMEN
+                </div>
+              )}
 
               <div className="money-hover-info">
                 <span>{money.title}</span>
-                <small>{money.subtitle}</small>
+                <small>{money.side}</small>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="money-slider-info">
-          <span className="info-icon">ⓘ</span>
-          <span>
-            Arahkan kursor ke salah satu uang untuk melihat lebih dekat
-          </span>
-        </div>
       </div>
     </section>
   );
 }
 
-const moneyBackData = [
-  {
-    id: 1,
-    image: "/images/1000-belakang.jpg",
-    title: "Rp1.000",
-  },
-  {
-    id: 2,
-    image: "/images/2000-belakang.jpg",
-    title: "Rp2.000",
-  },
-  {
-    id: 3,
-    image: "/images/5000-belakang.jpg",
-    title: "Rp5.000",
-  },
-  {
-    id: 4,
-    image: "/images/10000-belakang.jpg",
-    title: "Rp10.000",
-  },
-  {
-    id: 5,
-    image: "/images/20000-belakang.jpg",
-    title: "Rp20.000",
-  },
-  {
-    id: 6,
-    image: "/images/50000-belakang.jpg",
-    title: "Rp50.000",
-  },
-  {
-    id: 7,
-    image: "/images/100000-belakang.jpg",
-    title: "Rp100.000",
-  },
+const emissionEditions = [
+  { year: "2022", title: "Uang Kertas TE 2022", label: "Uang kertas", target: "edition-2022", items: moneyData },
+  { year: "2016", title: "Uang Kertas TE 2016", label: "Uang kertas", target: "edition-2016", items: paper2016Data },
+  { year: "2014", title: "Uang Kertas TE 2014", label: "Uang kertas", target: "edition-2014", items: paper2014Data },
+  { year: "2009", title: "Uang Kertas TE 2009", label: "Uang kertas", target: "edition-2009", items: paper2009Data },
+  { year: "2005", title: "Uang Kertas TE 2005", label: "Uang kertas", target: "edition-2005", items: paper2005Data },
+  { year: "2004", title: "Uang Kertas TE 2004", label: "Uang kertas", target: "edition-2004", items: paper2004Data },
+  { year: "2001", title: "Uang Kertas TE 2001", label: "Uang kertas", target: "edition-2001", items: paper2001Data },
+  { year: "2000", title: "Uang Kertas TE 2000", label: "Uang kertas", target: "edition-2000", items: paper2000Data },
+  { year: "1945", title: "Oeang Republik Indonesia", label: "ORI", target: "edition-1945" },
 ];
 
+const banknoteEditions = emissionEditions.filter((edition) => edition.year !== "1945");
+const archiveEditions = emissionEditions.filter((edition) => edition.year === "1945");
+const emissionNavigationOptions = [
+  ...emissionEditions,
+  { year: "Koin", title: "Uang Logam", target: "coin-collection" },
+];
 
-function MoneyBackSlider() {
-  const trackRef = useRef(null);
-  const pausedRef = useRef(false);
+function EmissionYearSlider({ activeYear, onSelectYear }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const pickerRef = useRef(null);
+  const triggerRef = useRef(null);
 
-useEffect(() => {
-  const track = trackRef.current;
+  useEffect(() => {
+    if (!isOpen) return undefined;
 
-  if (!track) return;
-
-  let animationFrame;
-
-  const speed = 1.2;
-  const cardWidth = track.children[0]?.offsetWidth || 285;
-  const gap = 32;
-  const moveWidth = cardWidth + gap;
-
-  // Mulai sedikit dari kiri
-  let position = -moveWidth;
-
-  const animate = () => {
-    if (!pausedRef.current) {
-
-      // Bergerak ke kanan
-      position += speed;
-
-      // Ketika sudah sampai ujung
-      if (position >= 0) {
-
-        // Ambil CARD TERAKHIR
-        const lastCard = track.lastElementChild;
-
-        if (lastCard) {
-          // Pindahkan card terakhir ke depan
-          track.insertBefore(lastCard, track.firstElementChild);
-        }
-
-        // Geser kembali agar gerakan tetap mulus
-        position -= moveWidth;
+    const closeOnOutsideClick = (event) => {
+      if (!pickerRef.current?.contains(event.target)) {
+        setIsOpen(false);
       }
+    };
 
-      track.style.transform =
-        `translate3d(${position}px, 0, 0)`;
-    }
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => document.removeEventListener("pointerdown", closeOnOutsideClick);
+  }, [isOpen]);
 
-    animationFrame = requestAnimationFrame(animate);
-  };
-
-  animationFrame = requestAnimationFrame(animate);
-
-  return () => {
-    cancelAnimationFrame(animationFrame);
-  };
-}, []);
-
-  const handleMouseEnter = () => {
-    pausedRef.current = true;
-  };
-
-  const handleMouseLeave = () => {
-    pausedRef.current = false;
-  };
+  const activeEdition = emissionNavigationOptions.find(
+    (edition) => edition.year === activeYear
+  );
 
   return (
-    <div className="money-slider money-slider-back">
-      <div
-        className="money-track"
-        ref={trackRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {moneyBackData.map((money) => (
-          <div className="money-card" key={money.id}>
-            <img src={money.image} alt={`Bagian belakang ${money.title}`} />
-
-            <div className="money-hover-info">
-              <span>{money.title}</span>
-            </div>
-          </div>
-        ))}
+    <section className="year-edition-navigation" aria-label="Pilih tahun emisi">
+      <div className="year-edition-heading">
+        <span>JELAJAHI BERDASARKAN TAHUN</span>
       </div>
-    </div>
+
+      <div
+        className="year-edition-picker"
+        ref={pickerRef}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setIsOpen(false);
+          }
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            setIsOpen(false);
+            triggerRef.current?.focus();
+          }
+        }}
+      >
+        <button
+          className="year-edition-trigger"
+          ref={triggerRef}
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <span className="year-edition-trigger-label">Tahun Emisi</span>
+          <span className="year-edition-trigger-current">
+            {activeEdition?.year === "Koin" ? activeEdition.title : activeEdition?.year}
+          </span>
+          <span className={`year-edition-chevron${isOpen ? " open" : ""}`} aria-hidden="true" />
+        </button>
+
+        {isOpen && (
+          <div className="year-edition-menu" role="menu" aria-label="Pilih tahun emisi">
+          {emissionNavigationOptions.map((edition) => (
+            <button
+              className={`year-edition-option${activeYear === edition.year ? " active" : ""}`}
+              key={edition.year}
+              type="button"
+              role="menuitem"
+              aria-current={activeYear === edition.year ? "true" : undefined}
+              className={`year-edition-option${activeYear === edition.year ? " active" : ""}${edition.year === "Koin" ? " coin-option" : ""}`}
+              onClick={(event) => {
+                setIsOpen(false);
+                onSelectYear(event, edition);
+              }}
+            >
+              {edition.year !== "Koin" && (
+                <strong className="year-edition-option-year">{edition.year}</strong>
+              )}
+              <span className="year-edition-option-title">{edition.title}</span>
+            </button>
+          ))}
+          </div>
+        )}
+        </div>
+    </section>
+  );
+}
+
+
+function MoneyEditionSections({ onSelectMoney }) {
+  return (
+    <>
+      {banknoteEditions.map((edition) => (
+        <section
+          className="emission-edition"
+          id={edition.target}
+          key={edition.year}
+        >
+          <div className="emission-edition-heading">
+            <h2>
+              {edition.year === "1945"
+                ? edition.title
+                : `${edition.label === "Uang kertas" ? "Uang Kertas" : "Uang Logam"} Tahun Emisi ${edition.year}`}
+            </h2>
+            {(["2022", "2016", "2005", "2004"].includes(edition.year)) && (
+              <p>Dekatkan kursor/sentuh untuk menjeda putaran</p>
+            )}
+          </div>
+          {edition.items ? (
+            <>
+              <MoneySlider
+                id={edition.year === "2022" ? "informasi" : `${edition.target}-money`}
+                items={edition.items}
+                onSelectMoney={onSelectMoney}
+                animate={["2022", "2016", "2005", "2004"].includes(edition.year)}
+                combineSides={edition.year === "2005" || edition.year === "2004"}
+                direction={edition.year === "2004" ? "right" : "left"}
+                specimen={edition.year === "2016"}
+              />
+              {(edition.year === "2022" || edition.year === "2016") && (
+                <MoneySlider
+                  id={`${edition.target}-back-money`}
+                  items={edition.items}
+                  onSelectMoney={onSelectMoney}
+                  animate
+                  specimen={edition.year === "2016"}
+                  side="Belakang"
+                  direction="right"
+                />
+              )}
+            </>
+          ) : (
+            <div className="edition-empty-state">
+              <strong>Gambar edisi historis belum tersedia</strong>
+              <p>Bagian ini siap diisi saat aset arsip tersedia.</p>
+            </div>
+          )}
+        </section>
+      ))}
+
+      <section
+        className="emission-edition coin-collection"
+        id="coin-collection"
+        aria-label="Koleksi uang logam"
+      >
+        <div className="emission-edition-heading">
+          <h2>Koleksi Uang Logam</h2>
+          <p>Jelajahi sisi depan dan belakang dari berbagai tahun emisi.</p>
+        </div>
+
+        <h3 className="coin-side-heading">Sisi Depan</h3>
+        <MoneySlider
+          id="coin-front-slider"
+          items={coinData}
+          onSelectMoney={onSelectMoney}
+          animate
+          side="Depan"
+          direction="left"
+        />
+
+        <h3 className="coin-side-heading">Sisi Belakang</h3>
+        <MoneySlider
+          id="coin-back-slider"
+          items={coinData}
+          onSelectMoney={onSelectMoney}
+          animate
+          side="Belakang"
+          direction="right"
+        />
+      </section>
+
+      {archiveEditions.map((edition) => (
+        <section
+          className="emission-edition"
+          id={edition.target}
+          key={edition.year}
+        >
+          <div className="emission-edition-heading">
+            <h2>{edition.title}</h2>
+          </div>
+          <div className="edition-empty-state">
+            <strong>Gambar edisi historis belum tersedia</strong>
+            <p>Bagian ini siap diisi saat aset arsip tersedia.</p>
+          </div>
+        </section>
+      ))}
+    </>
   );
 }
 
@@ -317,6 +500,52 @@ useEffect(() => {
 
 function App() {
   const [selectedMoney, setSelectedMoney] = useState(null);
+  const [activeView, setActiveView] = useState("dashboard");
+  const [activeEmissionYear, setActiveEmissionYear] = useState("2022");
+
+  const showDashboard = (event, targetId = "dashboard") => {
+    event?.preventDefault();
+    setActiveView("dashboard");
+    window.setTimeout(() => {
+      document.getElementById(targetId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 0);
+  };
+
+  const selectEmissionYear = (event, edition) => {
+    setActiveEmissionYear(edition.year);
+    const navigation = document.getElementById("mainNavigation");
+    const mobileMenuOpen =
+      window.innerWidth <= 991 && navigation?.classList.contains("show");
+
+    if (mobileMenuOpen) {
+      event?.preventDefault();
+      setActiveView("dashboard");
+      navigation.addEventListener(
+        "hidden.bs.collapse",
+        () => {
+          document.getElementById(edition.target)?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        },
+        { once: true }
+      );
+      document.querySelector(".custom-toggler")?.click();
+      return;
+    }
+
+    showDashboard(event, edition.target);
+  };
+
+  const showThreeDActivity = (event) => {
+    event?.preventDefault();
+    setActiveView("threeD");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="app">
       {/* =====================================================
@@ -332,7 +561,7 @@ function App() {
 
           <div className="navbar-left">
             {/* LOGO BANK INDONESIA */}
-            <a href="#koin" className="bi-logo">
+            <a href="#dashboard" className="bi-logo">
               <img src="/images/logo-bi.png" alt="Bank Indonesia" />
             </a>
 
@@ -366,24 +595,83 @@ function App() {
           ================================================= */}
 
           <div className="collapse navbar-collapse" id="mainNavigation">
-            <nav className="custom-nav">
-              <a href="#koin" className="custom-nav-link active">
-                Beranda
-              </a>
+            <ul className="nav nav-underline custom-nav">
+              <li className="nav-item">
+                <a
+                  href="#dashboard"
+                  className={`nav-link ${activeView === "dashboard" ? "active" : ""}`}
+                  aria-current={activeView === "dashboard" ? "page" : undefined}
+                  onClick={showDashboard}
+                >
+                  Beranda
+                </a>
+              </li>
 
-              <a href="#edukasi" className="custom-nav-link">
-                Kito Belajar
-              </a>
+              <li className="nav-item dropdown">
+                <a
+                  className={`nav-link dropdown-toggle ${activeView === "threeD" ? "active" : ""}`}
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Jelajah Rupiah
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a className="dropdown-item" href="#aktivitas-3d" onClick={showThreeDActivity}>
+                      Aktivitas 3D
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#informasi" onClick={(event) => showDashboard(event, "informasi")}>
+                      Koleksi Rupiah
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#coin-collection" onClick={(event) => showDashboard(event, "coin-collection")}>
+                      Koleksi Uang Logam
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#edukasi" onClick={(event) => showDashboard(event, "edukasi")}>
+                      Edukasi
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
-              <a href="#informasi" className="custom-nav-link">
-                Kito Berbagi
-              </a>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Tahun Emisi
+                </a>
+                <ul className="dropdown-menu">
+                  {emissionNavigationOptions.map((edition) => (
+                    <li key={edition.year}>
+                      <button
+                        className={`dropdown-item${activeEmissionYear === edition.year ? " active" : ""}`}
+                        type="button"
+                        aria-current={activeEmissionYear === edition.year ? "true" : undefined}
+                        onClick={(event) => selectEmissionYear(event, edition)}
+                      >
+                        {edition.year === "Koin"
+                          ? edition.title
+                          : `${edition.year} · ${edition.title}`}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </li>
 
-              <a href="#edukasi" className="custom-nav-link">
-                Kito Bergerak
-              </a>
-            </nav>
+            </ul>
           </div>
+
         </div>
       </header>
 
@@ -394,6 +682,7 @@ function App() {
       <div className="rupiah-ticker">
         <div className="ticker-track">
           {/* TICKER PERTAMA */}
+          
           <div className="ticker-content">
             <span className="ticker-icon">✦</span>
             <span>
@@ -457,54 +746,55 @@ function App() {
           </p>
         </div>
 
-        <div className="year">
-          <span>Koleksi Mata Uang</span>
-          <strong>Rupiah</strong>
-        </div>
       </header>
 
+      <EmissionYearSlider
+        activeYear={activeEmissionYear}
+        onSelectYear={selectEmissionYear}
+      />
 
       {/* =====================================================
           MAIN CONTENT
       ===================================================== */}
 
-      <main className="main">
+      <main
+        id="dashboard"
+        className={`main ${
+          activeView === "threeD" ? "three-d-mode" : "dashboard-mode"
+        }`}
+      >
+        {activeView === "threeD" && (
+          <div className="three-d-activity-header" id="aktivitas-3d">
+            <div>
+              <span>AKTIVITAS KHUSUS</span>
+              <h2>Jelajahi Rupiah dalam 3D</h2>
+              <p>Putar, zoom, dan lihat setiap sisi pecahan secara interaktif.</p>
+            </div>
+            <button type="button" onClick={showDashboard}>
+              Kembali ke dashboard
+            </button>
+          </div>
+        )}
+
         {/* =================================================
             COIN AREA
         ================================================= */}
-
-        <section className="coin-layout" id="koin">
-          {/* =================================================
-              CARD KETERANGAN KIRI
-          ================================================= */}
-
-          <div className="money-side-card left">
-            <div className="money-info">
-              <span>NOMINAL</span>
-              <strong>Rp1.000</strong>
-            </div>
-
-            <div className="money-info">
-              <span>DIAMETER</span>
-              <strong>24,15 mm</strong>
-            </div>
-
-            <div className="money-info">
-              <span>TAHUN EMISI</span>
-              <strong>2010</strong>
-            </div>
-          </div>
 
           {/* =================================================
               COIN 3D
           ================================================= */}
 
+          {activeView === "threeD" && (
           <div className="coin-card">
             {/* COIN HEADER */}
             <div className="coin-header">
               <div>
                 <span>3D EDUKASI</span>
-                <h2>Koin Rp1.000</h2>
+                <h2>
+                  {selectedMoney
+                    ? `${selectedMoney.subtitle} ${selectedMoney.title}`
+                    : "Pilih Uang untuk Dilihat"}
+                </h2>
               </div>
 
               <div className="status">
@@ -529,9 +819,13 @@ function App() {
               {/* INSTRUCTION */}
               <div className="instruction">
                 <span className="mouse-icon">🖱</span>
-                <span>Geser untuk memutar</span>
+                <span>Tarik untuk memutar</span>
                 <b>•</b>
-                <span>Scroll untuk zoom</span>
+                <span>Scroll / cubit untuk zoom</span>
+                <b>•</b>
+                <span>Geser 2 jari untuk pindah</span>
+                <b>•</b>
+                <span>Ctrl + tarik untuk lihat ujung</span>
               </div>
             </div>
           <div
@@ -586,75 +880,17 @@ function App() {
             )}
           </div>
         </div>
+          )}
+
+          {activeView === "dashboard" && (
+            <MoneyEditionSections onSelectMoney={setSelectedMoney} />
+          )}
 
           {/* =================================================
               CARD KETERANGAN KANAN
           ================================================= */}
 
-          <div className="money-side-card right">
-            <div className="money-info">
-              <span>BAHAN</span>
-              <strong>Logam</strong>
-            </div>
-
-            <div className="money-info">
-              <span>TEBAL</span>
-              <strong>1,60 mm</strong>
-            </div>
-
-            <div className="money-info">
-              <span>PENGELUAR</span>
-              <strong>Bank Indonesia</strong>
-            </div>
-          </div>
-        </section>
-
-        <MoneySlider />
-        <MoneyBackSlider />
-
-        {/* =====================================================
-            EDUCATION
-        ===================================================== */}
-
-        <section className="education" id="edukasi">
-          <div className="section-title">
-            <span>INFORMASI KOIN</span>
-            <h2>Kenali Rupiah Lebih Dekat</h2>
-            <p>Pelajari karakteristik koin Rupiah melalui tampilan 3D interaktif.</p>
-          </div>
-
-          <div className="education-grid">
-            {/* CARD 01 */}
-            <article className="education-card">
-              <div className="card-number">01</div>
-              <h3>Sisi Depan</h3>
-              <p>
-                Menampilkan lambang Negara Kesatuan Republik Indonesia dan nilai
-                nominal koin.
-              </p>
-            </article>
-
-            {/* CARD 02 */}
-            <article className="education-card">
-              <div className="card-number">02</div>
-              <h3>Sisi Belakang</h3>
-              <p>
-                Menampilkan gambar Angklung sebagai salah satu unsur budaya
-                Indonesia.
-              </p>
-            </article>
-
-            {/* CARD 03 */}
-            <article className="education-card">
-              <div className="card-number">03</div>
-              <h3>Interaktif 3D</h3>
-              <p>
-                Putar koin untuk melihat permukaan depan, belakang, dan bagian
-                sampingnya.
-              </p>
-            </article>
-          </div>
-        </section>
+          
       </main>
 
       {/* =====================================================
