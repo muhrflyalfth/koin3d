@@ -98,6 +98,10 @@ const createHistoricalBanknotes = (year, denominations, variants = {}) =>
         image: `${imageBase}-depan${suffix}.jpg`,
         front: `${imageBase}-depan${suffix}.jpg`,
         back: `${imageBase}-belakang${suffix}.jpg`,
+        ...(year === 2016 && {
+          frontUv: `${imageBase}-depan-uv.jpg`,
+          backUv: `${imageBase}-belakang-uv.jpg`,
+        }),
         title,
         variantLabel,
         subtitle: `Uang Kertas TE ${year}${variantLabel ? ` ${variantLabel}` : ""}`,
@@ -277,6 +281,90 @@ function MoneySlider({ onSelectMoney, items = moneyData, id = "informasi", anima
           ))}
         </div>
 
+      </div>
+    </section>
+  );
+}
+
+function UltravioletComparison({ money, side, normalImage, ultravioletImage }) {
+  const [position, setPosition] = useState(50);
+  const sideLabel = side === "depan" ? "Bagian Depan Rupiah" : "Bagian Belakang Rupiah";
+  const hasUltravioletImage = Boolean(ultravioletImage);
+
+  return (
+    <article className="ultraviolet-comparison">
+      <div className="ultraviolet-comparison-image">
+        <img src={normalImage} alt={`${money.title}, ${sideLabel}`} />
+        {hasUltravioletImage && (
+          <>
+            <img
+              className="ultraviolet-image"
+              src={ultravioletImage}
+              alt=""
+              aria-hidden="true"
+              style={{ clipPath: `inset(0 0 0 ${position}%)` }}
+            />
+            <span
+              className="ultraviolet-divider"
+              style={{ left: `${position}%` }}
+              aria-hidden="true"
+            >
+              <span>↔</span>
+            </span>
+            <input
+              className="ultraviolet-slider"
+              type="range"
+              min="0"
+              max="100"
+              value={position}
+              onChange={(event) => setPosition(Number(event.target.value))}
+              aria-label={`Geser untuk membandingkan ${sideLabel.toLowerCase()} ${money.title} dengan gambar ultra violet`}
+            />
+          </>
+        )}
+        <span className="ultraviolet-image-label normal-label" aria-hidden="true">Normal</span>
+        {hasUltravioletImage && (
+          <span className="ultraviolet-image-label uv-label" aria-hidden="true">Ultra Violet</span>
+        )}
+      </div>
+      <h4>{sideLabel}</h4>
+      <span className="ultraviolet-denomination">{money.title}</span>
+    </article>
+  );
+}
+
+function UltravioletSection({ money }) {
+  if (!money) return null;
+  const hasUltravioletImages = Boolean(money.frontUv && money.backUv);
+
+  return (
+    <section className="ultraviolet-section" aria-labelledby="ultraviolet-heading">
+      <div className="ultraviolet-heading">
+        <h3 id="ultraviolet-heading">
+          {hasUltravioletImages ? "Tampilan Ultra Violet" : "Tampilan Depan & Belakang"}
+        </h3>
+        <p>{money.title} · {money.subtitle}</p>
+      </div>
+      {hasUltravioletImages && (
+        <p className="ultraviolet-description">
+          Geser pembatas untuk membandingkan tampilan normal dan di bawah sinar ultra violet.
+        </p>
+      )}
+      <div className="ultraviolet-grid">
+        <UltravioletComparison
+          key={`${money.id}-front-uv`}
+          money={money}
+          side="depan"
+          normalImage={money.front || money.image}
+          ultravioletImage={money.frontUv}
+        />
+        <UltravioletComparison
+          key={`${money.id}-back-uv`}
+          money={money}
+          side="belakang"
+          normalImage={money.back || money.image}
+          ultravioletImage={money.backUv}
+        />
       </div>
     </section>
   );
@@ -791,6 +879,7 @@ function App() {
           ================================================= */}
 
           {activeView === "threeD" && (
+          <>
           <div className="coin-card">
             {/* COIN HEADER */}
             <div className="coin-header">
@@ -827,23 +916,19 @@ function App() {
               <div className="viewer-glow"></div>
               <div className="viewer-grid"></div>
 
+              <div className="viewer-rotate-hint" aria-label="Seret objek untuk memutarnya">
+                <span aria-hidden="true">↻</span>
+                <span>360° · Seret untuk memutar</span>
+              </div>
+
               {/* OBJEK 3D */}
               <div className="coin-3d-container">
                 <Coin3D money={selectedMoney} />  
               </div>
-
-              {/* INSTRUCTION */}
-              <div className="instruction">
-                <span className="instruction-item">
-                  <span className="mouse-icon" aria-hidden="true">🖱</span>
-                  Tarik untuk memutar
-                </span>
-                <span className="instruction-item">Scroll / cubit untuk zoom</span>
-                <span className="instruction-item">Geser 2 jari untuk pindah</span>
-                <span className="instruction-item">Ctrl + tarik untuk lihat ujung</span>
-              </div>
             </div>
         </div>
+            <UltravioletSection money={selectedMoney} />
+          </>
           )}
 
           {activeView === "dashboard" && (

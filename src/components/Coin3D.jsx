@@ -61,9 +61,9 @@ function CoinModel({ money }) {
         {/* TEPI KOIN */}
         <meshStandardMaterial
           attach="material-0"
-          color="#bfc3c5"
-          metalness={0.96}
-          roughness={0.22}
+          color="#c8cdd0"
+          metalness={0.18}
+          roughness={0.48}
         />
 
         {/* DEPAN */}

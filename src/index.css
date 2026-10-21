@@ -893,66 +893,6 @@
 
 
 /* =========================================================
-   360 INSTRUCTION
-========================================================= */
-
-.viewer-instruction {
-  position: absolute;
-
-  left: 50%;
-
-  bottom: 94px;
-
-  z-index: 20;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 9px 17px;
-
-  border: 1px solid #dce9f5;
-
-  border-radius: 25px;
-
-  background: rgba(255, 255, 255, 0.9);
-
-  box-shadow:
-    0 8px 20px rgba(30, 70, 110, 0.08);
-
-  transform: translateX(-50%);
-}
-
-.rotate-symbol {
-  color: #1769e0;
-
-  font-size: 18px;
-
-  font-weight: 800;
-}
-
-.viewer-instruction strong {
-  display: block;
-
-  color: #1769e0;
-
-  font-size: 11px;
-}
-
-.viewer-instruction span {
-  display: block;
-
-  color: #7c94aa;
-
-  font-size: 9px;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
    SIDE SWITCH
 ========================================================= */
 
@@ -1421,12 +1361,6 @@
 
   .arrow-right {
     right: 4px;
-  }
-
-  .viewer-instruction {
-    bottom: 77px;
-
-    padding: 8px 12px;
   }
 
   .side-switch {
