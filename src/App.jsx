@@ -238,7 +238,6 @@ function MoneySlider({ onSelectMoney, items = moneyData, id = "informasi", anima
             <div
               className={`money-card money-side-card${money.type === "coin" ? " coin-side-card" : ""}`}
               key={`${money.id}-${money.side}`}
-              draggable
               role="button"
               tabIndex={0}
               onClick={() => onSelectMoney(money)}
@@ -247,12 +246,6 @@ function MoneySlider({ onSelectMoney, items = moneyData, id = "informasi", anima
                   e.preventDefault();
                   onSelectMoney(money);
                 }
-              }}
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "money",
-                  JSON.stringify(money)
-                );
               }}
             >
               <img
@@ -370,7 +363,6 @@ function EmissionYearSlider({ activeYear, onSelectYear }) {
           <div className="year-edition-menu" role="menu" aria-label="Pilih tahun emisi">
           {emissionNavigationOptions.map((edition) => (
             <button
-              className={`year-edition-option${activeYear === edition.year ? " active" : ""}`}
               key={edition.year}
               type="button"
               role="menuitem"
@@ -540,10 +532,24 @@ function App() {
     showDashboard(event, edition.target);
   };
 
+  const navigateToThreeDActivity = () => {
+    setActiveView("threeD");
+    window.setTimeout(() => {
+      document.getElementById("aktivitas-3d")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 0);
+  };
+
   const showThreeDActivity = (event) => {
     event?.preventDefault();
-    setActiveView("threeD");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigateToThreeDActivity();
+  };
+
+  const openMoneyInThreeD = (money) => {
+    setSelectedMoney(money);
+    navigateToThreeDActivity();
   };
 
   return (
@@ -807,7 +813,17 @@ function App() {
                 3D VIEWER
             ================================================= */}
 
-            <div className="coin-viewer">
+            <div className={`coin-viewer${selectedMoney ? " has-selected-money" : ""}`}>
+              {selectedMoney && (
+                <img
+                  className="money-viewer-backdrop"
+                  src={selectedMoney.side === "Belakang"
+                    ? selectedMoney.front || selectedMoney.image
+                    : selectedMoney.back || selectedMoney.image}
+                  alt=""
+                  aria-hidden="true"
+                />
+              )}
               <div className="viewer-glow"></div>
               <div className="viewer-grid"></div>
 
@@ -818,72 +834,20 @@ function App() {
 
               {/* INSTRUCTION */}
               <div className="instruction">
-                <span className="mouse-icon">🖱</span>
-                <span>Tarik untuk memutar</span>
-                <b>•</b>
-                <span>Scroll / cubit untuk zoom</span>
-                <b>•</b>
-                <span>Geser 2 jari untuk pindah</span>
-                <b>•</b>
-                <span>Ctrl + tarik untuk lihat ujung</span>
+                <span className="instruction-item">
+                  <span className="mouse-icon" aria-hidden="true">🖱</span>
+                  Tarik untuk memutar
+                </span>
+                <span className="instruction-item">Scroll / cubit untuk zoom</span>
+                <span className="instruction-item">Geser 2 jari untuk pindah</span>
+                <span className="instruction-item">Ctrl + tarik untuk lihat ujung</span>
               </div>
             </div>
-          <div
-            className={`money-drop-zone ${
-              selectedMoney ? "has-money" : ""
-            }`}
-            onDragOver={(e) => {
-              e.preventDefault();
-            }}
-            onDrop={(e) => {
-              e.preventDefault();
-
-              const moneyData = e.dataTransfer.getData("money");
-
-              if (!moneyData) return;
-
-              const money = JSON.parse(moneyData);
-
-              setSelectedMoney(money);
-            }}
-          >
-            {selectedMoney ? (
-              <>
-                <div className="selected-money-label">
-                  UANG TERPILIH
-                </div>
-
-                <img
-                  src={selectedMoney.image}
-                  alt={selectedMoney.title}
-                  className="selected-money-image"
-                />
-
-                <strong className="selected-money-title">
-                  {selectedMoney.title}
-                </strong>
-
-                <span className="selected-money-hint">
-                  Uang berhasil dipilih
-                </span>
-              </>
-            ) : (
-              <>
-                <div className="drop-icon">↓</div>
-
-                <strong>Tarik uang ke sini</strong>
-
-                <span>
-                  Lepaskan uang untuk memilih pecahan
-                </span>
-              </>
-            )}
-          </div>
         </div>
           )}
 
           {activeView === "dashboard" && (
-            <MoneyEditionSections onSelectMoney={setSelectedMoney} />
+            <MoneyEditionSections onSelectMoney={openMoneyInThreeD} />
           )}
 
           {/* =================================================

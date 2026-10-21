@@ -35,6 +35,7 @@ function CoinModel({ money }) {
 
   return (
     <group
+      rotation={[0, money?.side === "Belakang" ? Math.PI : 0, 0]}
       scale={[
         0.82,
         0.82,
@@ -100,10 +101,16 @@ function BanknoteModel({ money }) {
 
   if (!money) return null;
 
+  const image = frontTexture.image;
+  const aspectRatio = image?.width && image?.height
+    ? image.width / image.height
+    : 2;
+  const width = 4.8;
+  const height = width / aspectRatio;
 
   return (
     <group
-      rotation={[0, 0, 0]}
+      rotation={[0, money.side === "Belakang" ? Math.PI : 0, 0]}
       scale={[1.28, 1.28, 1.28]}
     >
 
@@ -114,9 +121,9 @@ function BanknoteModel({ money }) {
 
         <boxGeometry
           args={[
-            4.8,
-            2.4,
-            0.04
+            width,
+            height,
+            0.012
           ]}
         />
 
@@ -161,7 +168,7 @@ function BanknoteModel({ money }) {
         <meshStandardMaterial
           attach="material-4"
           map={frontTexture}
-          color="#a5afb2"
+          color="#ffffff"
           roughness={0.74}
           metalness={0}
         />
@@ -174,7 +181,9 @@ function BanknoteModel({ money }) {
         <meshStandardMaterial
           attach="material-5"
           map={backTexture}
-          color="#d0d0d0"
+          color="#ffffff"
+          roughness={0.74}
+          metalness={0}
         />
 
       </mesh>
